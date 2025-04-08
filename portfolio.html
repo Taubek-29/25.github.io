@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио | Презентация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e8efb;
+            --primary-dark: #5a7df5;
+            --secondary: #a777e3;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Контейнер презентации */
+        .portfolio-presentation {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Шапка */
+        .presentation-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .edit-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Основное содержимое */
+        .presentation-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+
+        /* Боковая панель */
+        .presentation-sidebar {
+            width: 300px;
+            background: white;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 5;
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+
+        .presentation-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .theme-option {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .theme-option.active .theme-preview {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Слайды */
+        .slides-container {
+            flex: 1;
+            padding: 40px 5%;
+            overflow-y: auto;
+        }
+
+        .slide {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        /* Стили для разных слайдов */
+        .welcome-slide {
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 40px;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .about-text {
+            flex: 1;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .skills-container {
+            flex: 0 0 300px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill {
+            background: rgba(110, 142, 251, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .skill:hover {
+            background: rgba(110, 142, 251, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-card h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            background: rgba(110, 142, 251, 0.1);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Навигация */
+        .slide-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Кнопка настроек */
+        .settings-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--dark);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .settings-btn:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+            }
+            
+            .presentation-sidebar {
+                width: 280px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .slide {
+                padding: 25px 20px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portfolio-presentation">
+        <!-- Шапка -->
+        <header class="presentation-header">
+            <div class="logo">PortfolioGen</div>
+            <button class="edit-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-edit"></i> Редактировать
+            </button>
+        </header>
+
+        <!-- Основное содержимое -->
+        <div class="presentation-container">
+            <!-- Боковая панель -->
+            <aside class="presentation-sidebar">
+                <div class="sidebar-header">
+                    <h3>Настройки презентации</h3>
+                    <button class="close-sidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <h4>Цветовая тема</h4>
+                <div class="theme-options">
+                    <div class="theme-option active" data-theme="minimal">
+                        <div class="theme-preview" style="background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);"></div>
+                        <span>Минимализм</span>
+                    </div>
+                    <div class="theme-option" data-theme="creative">
+                        <div class="theme-preview" style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);"></div>
+                        <span>Креативный</span>
+                    </div>
+                    <div class="theme-option" data-theme="tech">
+                        <div class="theme-preview" style="background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);"></div>
+                        <span>Технологичный</span>
+                    </div>
+                    <div class="theme-option" data-theme="elegant">
+                        <div class="theme-preview" style="background: linear-gradient(135deg, #614385 0%, #516395 100%);"></div>
+                        <span>Элегантный</span>
+                    </div>
+                </div>
+                
+                <h4>Анимации</h4>
+                <div style="margin-top: 15px;">
+                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="radio" name="animation" value="fade" checked>
+                        <span>Плавное появление</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="radio" name="animation" value="slide">
+                        <span>Скольжение</span>
+                    </label>
+                </div>
+            </aside>
+
+            <!-- Слайды -->
+            <main class="slides-container">
+                <!-- Слайд 1: Приветствие -->
+                <section class="slide welcome-slide active">
+                    <h1 class="welcome-title">Добро пожаловать на мой сайт-портфолио</h1>
+                    <p class="welcome-subtitle" id="welcome-subtitle">Я [Имя], [Профессия]</p>
+                    <div style="margin-top: 50px;">
+                        <button class="nav-btn" onclick="nextSlide()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Слайд 2: Обо мне -->
+                <section class="slide about-slide">
+                    <h2>Обо мне</h2>
+                    <div class="about-content">
+                        <div class="about-text" id="about-text">
+                            Здесь будет информация о вас, вашем опыте и профессиональных навыках.
+                        </div>
+                        <div class="skills-container">
+                            <h3>Мои навыки</h3>
+                            <div class="skills-list" id="skills-list">
+                                <!-- Навыки будут здесь -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Слайд 3: Проекты -->
+                <section class="slide projects-slide">
+                    <h2>Мои проекты</h2>
+                    <div class="projects-grid" id="projects-grid">
+                        <!-- Проекты будут здесь -->
+                    </div>
+                </section>
+
+                <!-- Слайд 4: Контакты -->
+                <section class="slide contact-slide">
+                    <h2>Свяжитесь со мной</h2>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span id="contact-email">example@email.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <span id="contact-phone">+7 (123) 456-78-90</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span id="contact-location">Москва, Россия</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Кнопка настроек -->
+        <button class="settings-btn" id="settings-btn">
+            <i class="fas fa-cog"></i>
+        </button>
+
+        <!-- Навигация -->
+        <div class="slide-nav">
+            <button class="nav-btn" onclick="prevSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn" onclick="nextSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Получаем данные из localStorage
+        const portfolioData = JSON.parse(localStorage.getItem('portfolioData'));
+        
+        if (!portfolioData) {
+            alert('Данные не найдены. Пожалуйста, заполните форму сначала.');
+            window.location.href = 'index.html';
+        }
+
+        // Текущий слайд
+        let currentSlide = 1;
+        const totalSlides = 4;
+
+        // DOM элементы
+        const slides = document.querySelectorAll('.slide');
+        const sidebar = document.querySelector('.presentation-sidebar');
+        const settingsBtn = document.getElementById('settings-btn');
+        const themeOptions = document.querySelectorAll('.theme-option');
+
+        // Заполняем данные
+        document.getElementById('welcome-subtitle').textContent = 
+            `Я ${portfolioData.name}, ${portfolioData.job}`;
+        document.getElementById('about-text').textContent = portfolioData.about;
+        document.getElementById('contact-email').textContent = portfolioData.email;
+        document.getElementById('contact-email').parentElement.href = `mailto:${portfolioData.email}`;
+
+        // Заполняем навыки
+        const skillsList = document.getElementById('skills-list');
+        portfolioData.skills.forEach(skill => {
+            const skillElement = document.createElement('div');
+            skillElement.className = 'skill';
+            skillElement.textContent = skill;
+            skillsList.appendChild(skillElement);
+        });
+
+        // Заполняем проекты
+        const projectsGrid = document.getElementById('projects-grid');
+        portfolioData.projects.forEach(project => {
+            const projectCard = document.createElement('div');
+            projectCard.className = 'project-card';
+            projectCard.innerHTML = `
+                <h3>${project}</h3>
+                <p>Подробное описание проекта и достигнутых результатов</p>
+            `;
+            projectsGrid.appendChild(projectCard);
+        });
+
+        // Функции навигации
+        function showSlide(n) {
+            // Скрываем все слайды
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Показываем нужный слайд
+            slides[n - 1].classList.add('active');
+            currentSlide = n;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Открытие/закрытие боковой панели
+        settingsBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+        });
+
+        // Смена темы
+        themeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                themeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                // Здесь можно добавить логику смены темы
+                // Например, изменять CSS-переменные
+            });
+        });
+
+        // Навигация клавиатурой
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Инициализация
+        showSlide(1);
+    </script>
+</body>
+</html>
